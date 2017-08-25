@@ -1,0 +1,12 @@
+body{
+    text-align: center;
+    padding: 100px;
+    background-color: lightslategray;
+}
+
+#mainContent{
+    background-color: wheat;
+    max-width: 70%;
+    margin-left: 15%;
+
+}
