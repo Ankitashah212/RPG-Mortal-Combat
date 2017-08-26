@@ -73,6 +73,23 @@ function selectOpponunt(playerClicked) {
 }
 function reOrgPlayers() {
 
+
+    for (var i = 0; i < players.length; i++) {
+        var player = players[i];
+        var col = $(player.name);
+
+        if (player.status == 1) {
+
+            $("#default").append($("#" + player.name));
+        }
+        else if (player.status == 2) {
+            $("#available").append($("#" + player.name));
+        }
+        else if (player.status == 3) {
+            $("#opponent").append($("#" + player.name));
+        }
+    }
+
 }
 
 
@@ -85,27 +102,18 @@ $(document).ready(function () {
         var col = $(this);
         var playerClicked = $(this).attr("id");
         var playerStatus = getPlayerStatus(playerClicked);
-        console.log("player selected " + playerClicked + playerStatus);
-
-        console.log(sedious.status);
-        console.log(sauron.status);
+        //beginning of game
         if (playerStatus == 0) {
-            console.log("in 0");
             selectChosenOne(playerClicked);
-            console.log(sedious.status);
-            console.log(sauron.status);
+            console.log("inside click " + playerStatus + " " + sedious.status);
 
         }
+        //already chose your player now selection opponent
         else if (playerStatus == 2) {
-            console.log("in 2");
-
             selectOpponunt(playerClicked);
-            //$("#row3").append(col);
-            //sedious.status++;
-            console.log(sedious.status);
-            console.log(sauron.status);
-
         }
+        reOrgPlayers();
+
 
     });
 

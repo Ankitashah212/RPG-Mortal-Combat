@@ -1,4 +1,7 @@
 
+h1,h2 {
+    color: white;
+}
 
 .player{
     background-color: wheat;
@@ -14,4 +17,5 @@
 .score{
     margin: 10px;
     font-size: 18px;
+    color: white;
 }
