@@ -2,17 +2,59 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>RPG</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="assets/javascript/game.js"></script>
 
-    <!--link rel="stylesheet" type="text/css" href="assets/css/reset.css"-->
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-
-    <title>War of Worlds</title>
 </head>
 
 <body>
+
+    <div class="container-fluid">
+        <h1>Yeah.. Good guys don't fight each other</h1>
+        <h2 id="select">Select your role</h2>
+        <div class="row">
+            <div class="col-sm-2 player" id="sedious">
+                Darth Sedious
+                <p id="healthSedious"></p>
+            </div>
+            <div class=" col-sm-2 player " id="joker">
+                Joker
+                <p id="healthJoker"></p>
+            </div>
+            <div class="col-sm-2 player" id="sauron">
+                Sauron
+                <p id="healthSauron"></p>
+            </div>
+            <div class=" col-sm-2 player " id="voldemort">
+                Lord Voldemort
+                <p id="healthVoldemort"></p>
+            </div>
+        </div>
+        <h2 id="opponent">Available to Attack</h2>
+        <div class="row" id="row2">
+
+        </div>
+
+        <h2 id="opponent">
+            Defender
+        </h2>
+        <div class="row" id="row3">
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+            <p id="scoreUpdate" class="score"> you attacked sedious for 12. He attacked back for 20</p>
+        </div>
+    </div>
+
 </body>
 
 </html>
