@@ -12,6 +12,8 @@ var opponentAttackPower;
 var player; // temp object to use with all loops
 
 var availableOppo = 3;
+var flagOppo = false;
+var lost = false;
 
 
 //constructor for players
@@ -73,14 +75,17 @@ function selectChosenOne(playerClicked) {
 
 }
 function selectOpponunt(playerClicked) {
+    if (!flagOppo) {
+        for (var i = 0; i < players.length; i++) {
+            var element = players[i];
 
-    for (var i = 0; i < players.length; i++) {
-        var element = players[i];
+            if (element.name == playerClicked) {
+                element.status = 3;
+                flagOppo = true;
 
-        if (element.name == playerClicked) {
-            element.status = 3;
+            }
+
         }
-
     }
 }
 function reOrgPlayers() {
@@ -129,7 +134,11 @@ function updateMessage() {
         $("#scoreUpdate").text("Winner Of The Game !!! Reset to Play Again");
         $("#attack").prop('disabled', true);
 
-    } else {
+    }
+    else if (lost) {
+
+    }
+    else {
         if (chosenOneName == undefined) {
             $("#scoreUpdate").text("Please Select a Player");
 
@@ -156,18 +165,19 @@ function doTheDamage() {
                 player.attackPower += player.learningPace;
             }
             if (player.health < 1) {
-
+                lost = true;
                 $("#attack").prop('disabled', true);
                 $("#scoreUpdate").text("sorry ! looks like you lost!! please reset to play again!!");
             }
 
         }
-        else if (player.name == opponentName) {
+        else if ((player.name == opponentName) && (!lost)) {
             //it is so unfair that opponent never learns!!!
             player.health -= chosenOneAttackPower;
 
             if (player.health < 1) {
                 player.status = 4;
+                flagOppo = false;
                 opponentAttackPower = undefined;
                 opponentName = undefined;
                 $("#scoreUpdate").text("you won!! Please select another opponent");
@@ -188,7 +198,7 @@ function attack() {
 $(document).ready(function () {
 
     displayPlayerHealth();
-    
+
     $(".player").on("click", function () {
         //reset text for score
         $("#scoreUpdate").text(" ");
@@ -196,7 +206,7 @@ $(document).ready(function () {
         var col = $(this);
         var playerClicked = $(this).attr("id");
         var playerStatus = getPlayerStatus(playerClicked);
-        
+
         //beginning of game
         if (playerStatus == 0) {
             selectChosenOne(playerClicked);
