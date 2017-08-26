@@ -6,9 +6,10 @@ var players = [];
 
 var chosenOneName;
 var chosenOneAttackPower;
+var ChosenOneCounter;
 
 var opponentName;
-var opponentAttackPower;
+var oppoCounter;
 var player; // temp object to use with all loops
 
 var availableOppo = 3;
@@ -17,27 +18,28 @@ var lost = false;
 
 
 //constructor for players
-function Villains(name, health, attackPower, learningPace, status) {
+function Villains(name, health, attackPower, basePower, counterAttack, status) {
     //treating this kinda like pk so that html can have fk that relates to the element
     this.name = name;
     this.health = health;
+    this.basePower = basePower;
     this.attackPower = attackPower;
     //@todo change learning pace according to who you are fightinng - add a 2 dimentional array
     //for now fixed learning power
-    this.learningPace = learningPace;
+    this.counterAttack = counterAttack;
     // 0 player , 1 chosen one, 2 available to attack, 3 defender, 4 defeated
     this.status = status;
 }
 
 
 //make an array of villains 
-var sedious = new Villains('sedious', sediousHealth, 9, 15, 0);
+var sedious = new Villains('sedious', sediousHealth, 25, 25, 5, 0);
 players.push(sedious);
-var joker = new Villains('joker', jokerHealth, 12, 12, 0);
+var joker = new Villains('joker', jokerHealth, 11, 11, 10, 0);
 players.push(joker);
-var sauron = new Villains('sauron', sauronHealth, 15, 9, 0);
+var sauron = new Villains('sauron', sauronHealth, 10, 10, 20, 0);
 players.push(sauron);
-var voldemort = new Villains('voldemort', voldemortHealth, 18, 6, 0);
+var voldemort = new Villains('voldemort', voldemortHealth, 9, 9, 25, 0);
 players.push(voldemort);
 
 function displayPlayerHealth() {
@@ -119,10 +121,11 @@ function setPlayers() {
         if (player.status == 1) {
             chosenOneName = players[i].name;
             chosenOneAttackPower = players[i].attackPower;
+            ChosenOneCounter = players[i].counterAttack;
         }
         else if (player.status == 3) {
             opponentName = players[i].name;
-            opponentAttackPower = players[i].attackPower;
+            oppoCounter = players[i].counterAttack;
         }
 
     }
@@ -136,8 +139,11 @@ function updateMessage() {
 
     }
     else if (lost) {
+        $("#attack").prop('disabled', true);
+        $("#scoreUpdate").text("sorry ! looks like you lost!! please reset to play again!!");
 
     }
+
     else {
         if (chosenOneName == undefined) {
             $("#scoreUpdate").text("Please Select a Player");
@@ -147,7 +153,7 @@ function updateMessage() {
             $("#scoreUpdate").text("Please Select an Opponent");
         }
         else {
-            $("#scoreUpdate").text(opponentName + " damaged you by " + opponentAttackPower + "\n"
+            $("#scoreUpdate").text(opponentName + " damaged you by " + oppoCounter + "\n"
                 + " you attacked back for " + chosenOneAttackPower + " damage");
 
         }
@@ -159,31 +165,45 @@ function doTheDamage() {
 
     for (var i = 0; i < players.length; i++) {
         player = players[i];
-        if (player.name == chosenOneName) {
-            if (opponentName != undefined) {
-                player.health -= opponentAttackPower;
-                player.attackPower += player.learningPace;
-            }
-            if (player.health < 1) {
-                lost = true;
-                $("#attack").prop('disabled', true);
-                $("#scoreUpdate").text("sorry ! looks like you lost!! please reset to play again!!");
-            }
 
-        }
-        else if ((player.name == opponentName) && (!lost)) {
+        if ((player.name == opponentName)) {
             //it is so unfair that opponent never learns!!!
             player.health -= chosenOneAttackPower;
+            console.log(player.health);
 
             if (player.health < 1) {
+                console.log("in here");
                 player.status = 4;
                 flagOppo = false;
-                opponentAttackPower = undefined;
+                oppoCounter = undefined;
                 opponentName = undefined;
                 $("#scoreUpdate").text("you won!! Please select another opponent");
                 availableOppo--;
 
             }
+
+        }
+
+    }
+
+}
+
+function takeTheDamage() {
+    if (opponentName != undefined) {
+        for (var i = 0; i < players.length; i++) {
+            player = players[i];
+
+            if ((player.name == chosenOneName)) {
+
+                console.log("oppo name " + opponentName);
+                player.health -= oppoCounter;
+                player.attackPower += player.basePower;
+                if (player.health < 1) {
+                    lost = true;
+                }
+            }
+
+
         }
     }
 }
@@ -191,6 +211,7 @@ function attack() {
 
     setPlayers();
     doTheDamage();
+    takeTheDamage();
     updateMessage();
 }
 
