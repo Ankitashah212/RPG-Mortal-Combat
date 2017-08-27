@@ -3,19 +3,15 @@ var jokerHealth = 130;
 var sauronHealth = 150;
 var voldemortHealth = 180;
 var players = [];
-
 var chosenOneName;
 var chosenOneAttackPower;
 var ChosenOneCounter;
-
 var opponentName;
 var oppoCounter;
 var player; // temp object to use with all loops
-
 var availableOppo = 3;
 var flagOppo = false;
 var lost = false;
-
 
 //constructor for players
 function Villains(name, health, attackPower, basePower, counterAttack, status) {
@@ -24,13 +20,10 @@ function Villains(name, health, attackPower, basePower, counterAttack, status) {
     this.health = health;
     this.basePower = basePower;
     this.attackPower = attackPower;
-    //@todo change learning pace according to who you are fightinng - add a 2 dimentional array
-    //for now fixed learning power
     this.counterAttack = counterAttack;
     // 0 player , 1 chosen one, 2 available to attack, 3 defender, 4 defeated
     this.status = status;
 }
-
 
 //make an array of villains 
 var sedious = new Villains('sedious', sediousHealth, 25, 25, 5, 0);
@@ -43,16 +36,14 @@ var voldemort = new Villains('voldemort', voldemortHealth, 9, 9, 25, 0);
 players.push(voldemort);
 
 function displayPlayerHealth() {
-
     //show initial health
     $("#healthSedious").text(sedious.health);
     $("#healthJoker").text(joker.health);
     $("#healthSauron").text(sauron.health);
     $("#healthVoldemort").text(voldemort.health);
-
 }
 
-
+//get the palyer status - chosenOne - available to attack, deffender or defeated
 function getPlayerStatus(playerClicked) {
     for (var i = 0; i < players.length; i++) {
         element = players[i];
@@ -62,8 +53,8 @@ function getPlayerStatus(playerClicked) {
     }
 }
 
+//set the player we chose to be
 function selectChosenOne(playerClicked) {
-
     for (var i = 0; i < players.length; i++) {
         var element = players[i];
         if (element.name == playerClicked) {
@@ -72,31 +63,28 @@ function selectChosenOne(playerClicked) {
         else {
             element.status = 2;
         }
-
     }
-
 }
+
+//picks opponent we chose
 function selectOpponunt(playerClicked) {
     if (!flagOppo) {
         for (var i = 0; i < players.length; i++) {
             var element = players[i];
-
             if (element.name == playerClicked) {
                 element.status = 3;
                 flagOppo = true;
-
             }
-
         }
     }
 }
-function reOrgPlayers() {
 
+//after every change reset the player arrangemet to reflect the change
+function reOrgPlayers() {
     for (var i = 0; i < players.length; i++) {
         player = players[i];
         var col = $(player.name);
         if (player.status == 1) {
-
             $("#default").append($("#" + player.name));
         }
         else if (player.status == 2) {
@@ -108,13 +96,12 @@ function reOrgPlayers() {
         else if (player.status == 4) {
             $("#" + player.name).remove();
         }
-
     }
-
 }
 
+//once both parties are decided -set players for combat
+//set corresponding variables
 function setPlayers() {
-
     //get data needed to capture correct fighters
     for (var i = 0; i < players.length; i++) {
         player = players[i];
@@ -127,27 +114,21 @@ function setPlayers() {
             opponentName = players[i].name;
             oppoCounter = players[i].counterAttack;
         }
-
     }
-
 }
 
 function updateMessage() {
     if (availableOppo == 0) {
         $("#scoreUpdate").text("Winner Of The Game !!! Reset to Play Again");
         $("#attack").prop('disabled', true);
-
     }
     else if (lost) {
         $("#attack").prop('disabled', true);
         $("#scoreUpdate").text("sorry ! looks like you lost!! please reset to play again!!");
-
     }
-
     else {
         if (chosenOneName == undefined) {
             $("#scoreUpdate").text("Please Select a Player");
-
         }
         else if (opponentName == undefined) {
             $("#scoreUpdate").text("Please Select an Opponent");
@@ -155,22 +136,18 @@ function updateMessage() {
         else {
             $("#scoreUpdate").text(opponentName + " damaged you by " + oppoCounter + "\n"
                 + " you attacked back for " + chosenOneAttackPower + " damage");
-
         }
     }
-
 }
 
+// damage the opponent
 function doTheDamage() {
-
     for (var i = 0; i < players.length; i++) {
         player = players[i];
-
         if ((player.name == opponentName)) {
             //it is so unfair that opponent never learns!!!
             player.health -= chosenOneAttackPower;
             console.log(player.health);
-
             if (player.health < 1) {
                 console.log("in here");
                 player.status = 4;
@@ -179,22 +156,17 @@ function doTheDamage() {
                 opponentName = undefined;
                 $("#scoreUpdate").text("you won!! Please select another opponent");
                 availableOppo--;
-
             }
-
         }
-
     }
-
 }
 
+//reflect the damage done to player
 function takeTheDamage() {
     if (opponentName != undefined) {
         for (var i = 0; i < players.length; i++) {
             player = players[i];
-
             if ((player.name == chosenOneName)) {
-
                 console.log("oppo name " + opponentName);
                 player.health -= oppoCounter;
                 player.attackPower += player.basePower;
@@ -202,19 +174,16 @@ function takeTheDamage() {
                     lost = true;
                 }
             }
-
-
         }
     }
 }
-function attack() {
 
+function attack() {
     setPlayers();
     doTheDamage();
     takeTheDamage();
     updateMessage();
 }
-
 
 $(document).ready(function () {
 
@@ -223,11 +192,9 @@ $(document).ready(function () {
     $(".player").on("click", function () {
         //reset text for score
         $("#scoreUpdate").text(" ");
-
         var col = $(this);
         var playerClicked = $(this).attr("id");
         var playerStatus = getPlayerStatus(playerClicked);
-
         //beginning of game
         if (playerStatus == 0) {
             selectChosenOne(playerClicked);
@@ -242,15 +209,11 @@ $(document).ready(function () {
     // reset - at any pont in game if you want to restart or at win or lose - restart
     $("#reset").on("click", function () {
         location.reload();
-
     });
 
     $("#attack").on("click", function () {
         attack();
         displayPlayerHealth();
         reOrgPlayers();
-
     });
-
 });
-
