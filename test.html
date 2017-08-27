@@ -1,0 +1,47 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Refactored date examples</title>
+
+    <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.4.0.css">
+    <script src="https://code.jquery.com/qunit/qunit-2.4.0.js"></script>
+    <script src="assets/javascript/qUnit.js"></script>
+
+    <script>
+        QUnit.config.reorder = false;
+        
+        QUnit.test("check initial status", function (assert) {
+
+            assert.equal(getPlayerStatus("sedious"), "0", "success");
+            assert.equal(getPlayerStatus("joker"), "0", "success");
+            assert.equal(getPlayerStatus("sauron"), "0");
+            assert.equal(getPlayerStatus("voldemort"), "0");
+
+        });
+
+        selectChosenOne("sedious");
+        QUnit.test("check status", function (assert) {
+            assert.equal(sedious.status, 1, "ok");
+            assert.equal(joker.status, "2");
+            assert.equal(sauron.status, "2");
+            assert.equal(voldemort.status, "2");
+        });
+
+        selectOpponunt("joker");
+        QUnit.test("check status", function (assert) {
+            assert.equal(sedious.status, 1, "ok");
+            assert.equal(joker.status, "3");
+            assert.equal(sauron.status, "2");
+            assert.equal(voldemort.status, "2");
+        });
+    </script>
+</head>
+
+<body>
+
+    <div id="qunit"></div>
+
+</body>
+
+</html>
