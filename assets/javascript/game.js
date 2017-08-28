@@ -123,8 +123,8 @@ function updateMessage() {
         $("#attack").prop('disabled', true);
     }
     else if (lost) {
-        $("#attack").prop('disabled', true);
         $("#scoreUpdate").text("sorry ! looks like you lost!! please reset to play again!!");
+        $("#attack").prop('disabled', true);
     }
     else {
         if (chosenOneName == undefined) {
@@ -147,9 +147,7 @@ function doTheDamage() {
         if ((player.name == opponentName)) {
             //it is so unfair that opponent never learns!!!
             player.health -= chosenOneAttackPower;
-            console.log(player.health);
             if (player.health < 1) {
-                console.log("in here");
                 player.status = 4;
                 flagOppo = false;
                 oppoCounter = undefined;
@@ -167,7 +165,6 @@ function takeTheDamage() {
         for (var i = 0; i < players.length; i++) {
             player = players[i];
             if ((player.name == chosenOneName)) {
-                console.log("oppo name " + opponentName);
                 player.health -= oppoCounter;
                 player.attackPower += player.basePower;
                 if (player.health < 1) {
